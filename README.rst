@@ -1,11 +1,11 @@
-cypto_hub for Python
+encode_hub for Python
 ===================
 
 Installation:
 
-    pip install cypto_hub
+    pip install encode_hub
 
 Usage
 
-    from cypto_hub import cypto_hub
+    from encode_hub import encode_hub
 
