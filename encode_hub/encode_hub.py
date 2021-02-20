@@ -67,7 +67,7 @@ def password_decrypt(token: bytes, password: str) -> bytes:
 
 def get_safe_pass():
   from getpass import getpass
-  password = getpass()
+  password = getpass(prompt = 'password:')
   return password
 
 def encode_hub(message):
@@ -75,9 +75,12 @@ def encode_hub(message):
   #print(token)
   return token
 
-def decode_hub(token):
+def decode_hub(token,password="-1"):
   try:
-    message = password_decrypt(token, get_safe_pass()).decode()
+    if password == "-1":
+        message = password_decrypt(token, get_safe_pass()).decode()
+    else:
+        message = password_decrypt(token, password).decode()
   except:
     message = Fernet.generate_key().decode('utf8')
   #print(message)
