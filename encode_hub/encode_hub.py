@@ -1,5 +1,22 @@
 import sys, os
+global save_stdout
+save_stdout = sys.stdout
+#############################################################################
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+def enablePrint():
+    global save_stdout
+    sys.stdout = save_stdout
+    
+class HiddenPrints:
+    def __enter__(self):
+        sys.stdout = open(os.devnull, 'w')
 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        global save_stdout
+        sys.stdout = save_stdout
+        
 try:
     from cryptography.fernet import Fernet
 except:
@@ -67,16 +84,17 @@ def decode_hub(token):
   return message
   
 def safe_decode(token):
-  resposta = Fernet.generate_key().decode('utf8')
-  try:
-    message = password_decrypt(token, get_safe_pass()).decode()
-    try:
-        _locals = locals()
-        exec(message, globals(), _locals)
-    except:
+  with HiddenPrints():
+      resposta = Fernet.generate_key().decode('utf8')
+      try:
+        message = password_decrypt(token, get_safe_pass()).decode()
+        try:
+            _locals = locals()
+            exec(message, globals(), _locals)
+        except:
+            pass
+      except:
         pass
-  except:
-    pass
   return resposta
 
 #################################################################################################
