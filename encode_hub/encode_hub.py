@@ -1,15 +1,5 @@
 import sys, os
 
-# Disable
-def blockPrint():
-    sys.stdout = open(os.devnull, 'w')
-
-# Restore
-def enablePrint():
-    sys.stdout = sys.__stdout__
-
-blockPrint()
-
 try:
     from cryptography.fernet import Fernet
 except:
@@ -19,7 +9,6 @@ try:
     from getpass import getpass
 except:
     os.system('pip getpass')
-
 
 ##################################################################################################
 # cryptography
